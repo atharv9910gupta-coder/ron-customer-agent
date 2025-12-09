@@ -1,23 +1,24 @@
-# frontend/app.py - main landing page (Streamlit)
+# frontend/app.py
 import streamlit as st
 from PIL import Image
 import os
 
-st.set_page_config(page_title="RON — Premium Agent", page_icon="assets/logo.png", layout="wide")
+st.set_page_config(page_title="RON — Premium Agent", layout="wide", initial_sidebar_state="expanded")
 
-# header + logo
-logo_path = "assets/logo.png"
+# safe logo load
+logo = None
+logo_path = os.path.join("assets", "logo.png")
 if os.path.exists(logo_path):
-    logo = Image.open(logo_path)
-    st.sidebar.image(logo, width=100)
-else:
-    st.sidebar.title("RON")
+    try:
+        logo = Image.open(logo_path)
+    except Exception:
+        logo = None
 
-st.sidebar.title("RON Admin")
-st.sidebar.markdown("Enterprise AI support system")
+with st.sidebar:
+    if logo:
+        st.image(logo, width=100)
+    st.title("RON System")
+    st.markdown("Enterprise AI support — demo")
 
-# pages are auto-loaded from /pages
 st.title("RON — Premium Customer Support Platform")
-st.write("Use the left sidebar to navigate.")
-st.write("This frontend uses Supabase for auth & DB, Groq for AI (llama-3.1-8b-instant).")
-
+st.markdown("Use the left sidebar to open pages: Chat Support, Email Support, Tickets, Settings.")
