@@ -1,14 +1,25 @@
-# frontend/pages/3_Tickets.py
 import streamlit as st
-from modules import db
+from modules.db import db
 
-st.header("🎫 Tickets")
+def app():
+    st.title("🎫 Ticket System")
 
-tickets = db.list_tickets(200)
-if not tickets:
-    st.info("No tickets yet.")
-for t in tickets:
-    st.markdown("---")
-    st.write(f"**{t.get('id', '?')} — {t.get('title','')}**")
-    st.write(t.get("description",""))
-    st.write(f"Status: {t.get('status','open')}")
+    st.subheader("Create a new ticket")
+
+    title = st.text_input("Ticket title")
+    description = st.text_area("Description")
+
+    if st.button("Create Ticket"):
+        if title and description:
+            db.create_ticket(title=title, description=description)
+            st.success("Ticket created successfully!")
+        else:
+            st.error("Please fill all fields.")
+
+    st.subheader("All Tickets")
+    tickets = db.get_tickets(50)
+
+    for t in tickets:
+        st.write(f"**#{t['id']} — {t['title']}**")
+        st.write(t["description"])
+        st.markdown("---")
