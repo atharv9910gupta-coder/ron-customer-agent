@@ -1,1 +1,8 @@
+streamlit>=1.26
+requests
+Pillow
+python-dotenv
+supabase
+groq
+psycopg2-binary
 
